@@ -1,7 +1,6 @@
+from linked_list import LinkedList
+
 class HashTableEntry:
-    """
-    Linked List hash table key/value pair
-    """
     def __init__(self, key, value):
         self.key = key
         self.value = value
@@ -13,37 +12,21 @@ MIN_CAPACITY = 8
 
 
 class HashTable:
-    """
-    A hash table that with `capacity` buckets
-    that accepts string keys
-
-    Implement this.
-    """
-
     def __init__(self, capacity):
         # Your code here
+        self.capacity = capacity
+        self.storage = [LinkedList()] * capacity
+        self.entries = 0
 
 
     def get_num_slots(self):
-        """
-        Return the length of the list you're using to hold the hash
-        table data. (Not the number of items stored in the hash table,
-        but the number of slots in the main list.)
-
-        One of the tests relies on this.
-
-        Implement this.
-        """
         # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
-        """
-        Return the load factor for this hash table.
-
-        Implement this.
-        """
         # Your code here
+        return self.entries / self.capacity
 
 
     def fnv1(self, key):
@@ -63,6 +46,10 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
+        hash = 5381
+        for i in key:
+            hash = ((hash << 5) + hash) + ord(i)
+        return hash & 0xFFFFFFFF
 
 
     def hash_index(self, key):
@@ -74,46 +61,86 @@ class HashTable:
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
-        """
-        Store the value with the given key.
-
-        Hash collisions should be handled with Linked List Chaining.
-
-        Implement this.
-        """
         # Your code here
+        # index = self.hash_index(key)
+        # hash = HashTableEntry(key, value)
+        # node = self.storage[index]
+
+        # if node is not None:
+        #     self.storage[index] = hash
+        #     self.storage[index].next = node
+        # else:
+        #     self.storage[index] = hash
+        #     self.entries += 1
+
+        ## handle colisions
+        #get index
+        i = hash_index(key)
+        #find start of linked list using index
+        #insert into linked list a new HashTableEntry
+        #search through list
+        #if key already exists in linked list replace that value
+            #else add new HashTableEntry to head of list
+        
+
 
 
     def delete(self, key):
-        """
-        Remove the value stored with the given key.
+        # # Your code here
+        # index = self.hash_index(key)
+        # node = self.storage[index]
+        # prev = None
 
-        Print a warning if the key is not found.
+        # if node.key == key:
+        #     self.storage[index] = node.next
+        #     return
+        # while node != None:
+        #     if node.key == key:
+        #         prev.next = node.next
+        #         self.storage[index].next = None
+        #         return
+            
+        #     prev = node
+        #     node = node.next
+        # self.elements -= 1
+        # return
 
-        Implement this.
-        """
-        # Your code here
-
+        i = hash_index(key)
+        #search through linked list for key
+        #delete that node and rearrange pointers
+        #return value of deleted node (or None)
 
     def get(self, key):
-        """
-        Retrieve the value stored with the given key.
+        # # Your code here
+        # i = self.hash_index(key)
+        # node = self.storage[i] 
+        # print(node)
 
-        Returns None if the key is not found.
+        # while node is not None:
+        #     if node.key == key:
+        #         return node.value
+        #     else:
+        #         node = node.next
 
-        Implement this.
-        """
-        # Your code here
 
+        #retrieve index
+        i = hash_index(key)
+        # get the linked list at the computed index
+        # search through linked list for the key
+        # compare keys till you find right one
+        # if it exists return value
+            # else return None
 
     def resize(self, new_capacity):
-        """
-        Changes the capacity of the hash table and
-        rehashes all key/value pairs.
-
-        Implement this.
-        """
         # Your code here
+        # Make a new array that is DOUBLE the current size
+        # Go through each linked list in the array
+            # Go through each item and re-hash it
+            # Insert the items into their new locations
+        # Time complexity?
+
+    def shrint():
+        # Same as resize, but reduce but HALF
 
 
 
