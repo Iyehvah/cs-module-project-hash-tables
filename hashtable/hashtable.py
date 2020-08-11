@@ -61,87 +61,64 @@ class HashTable:
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
-        # Your code here
-        # index = self.hash_index(key)
-        # hash = HashTableEntry(key, value)
-        # node = self.storage[index]
+        index = self.hash_index(key)
+        slot = self.storage[index]
+        current = slot.head
 
-        # if node is not None:
-        #     self.storage[index] = hash
-        #     self.storage[index].next = node
-        # else:
-        #     self.storage[index] = hash
-        #     self.entries += 1
+        while current is not None:
+            if current.key == key:
+                current.value = value
+                return
+            current = current.next
 
-        ## handle colisions
-        #get index
-        i = hash_index(key)
-        #find start of linked list using index
-        #insert into linked list a new HashTableEntry
-        #search through list
-        #if key already exists in linked list replace that value
-            #else add new HashTableEntry to head of list
-        
+        newElement = HashTableEntry(key, value)
+        slot.insert(newElement)
+        self.entries += 1
 
-
+        if self.get_load_factor() > 0.7:
+            self.resize(self.capacity * 2)
 
     def delete(self, key):
-        # # Your code here
-        # index = self.hash_index(key)
-        # node = self.storage[index]
-        # prev = None
+        index = self.hash_index(key)
+        slot = self.storage[index]
+        current = slot.head
 
-        # if node.key == key:
-        #     self.storage[index] = node.next
-        #     return
-        # while node != None:
-        #     if node.key == key:
-        #         prev.next = node.next
-        #         self.storage[index].next = None
-        #         return
-            
-        #     prev = node
-        #     node = node.next
-        # self.elements -= 1
-        # return
-
-        i = hash_index(key)
-        #search through linked list for key
-        #delete that node and rearrange pointers
-        #return value of deleted node (or None)
+        while current is not None:
+            if current.key == key:
+                slot.delete(current.value)
+                self.entries -= 1
+                if self.get_load_factor() < 0.2:
+                    self.resize(int(self.capacity * .5))
+                return
+            current = current.next
+        return None
 
     def get(self, key):
-        # # Your code here
-        # i = self.hash_index(key)
-        # node = self.storage[i] 
-        # print(node)
+        index = self.hash_index(key)
+        slot = self.storage[index]
+        current = slot.head
 
-        # while node is not None:
-        #     if node.key == key:
-        #         return node.value
-        #     else:
-        #         node = node.next
-
-
-        #retrieve index
-        i = hash_index(key)
-        # get the linked list at the computed index
-        # search through linked list for the key
-        # compare keys till you find right one
-        # if it exists return value
-            # else return None
+        while current:
+            if current.key == key:
+                return current.value
+            current = current.next
+        return None
 
     def resize(self, new_capacity):
-        # Your code here
-        # Make a new array that is DOUBLE the current size
-        # Go through each linked list in the array
-            # Go through each item and re-hash it
-            # Insert the items into their new locations
-        # Time complexity?
+        if new_capacity < MIN_CAPACITY:
+            resize_capacity = MIN_CAPACITY
+        else:
+            resize_capacity = new_capacity
 
-    def shrint():
-        # Same as resize, but reduce but HALF
-
+        storage_copy = self.storage
+        self.storage = [LinkedList()] * resize_capacity
+        self.entries = 0
+        self.capacity = resize_capacity
+        for each_item in storage_copy:
+            current = each_item.head
+            while current is not None:
+                self.put(current.key, current.value)
+                current = current.next
 
 
 if __name__ == "__main__":

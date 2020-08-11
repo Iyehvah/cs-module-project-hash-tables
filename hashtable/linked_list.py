@@ -15,6 +15,7 @@ class LinkedList:
                 return current
         return None
 
+#inserting at the head of our linked list
     def insert(self, value):
         value.next = self.head #moving our head over to make room for the new head of our list
         self.head = value #making new value our head here
